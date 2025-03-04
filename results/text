@@ -1,1 +1,2 @@
-
+The images are genated gradually in this way for the total number of epochs given.
+The process continues till the generated images are same as the original ones.
