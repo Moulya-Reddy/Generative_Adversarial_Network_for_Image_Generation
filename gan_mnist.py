@@ -11,20 +11,20 @@ x_train = np.expand_dims(x_train, axis=-1)  # Add channel dimension
 
 # Parameters
 latent_dim = 100  # Latent space dimension (size of input noise vector)
-epochs = 10000  # Reduced epochs for faster output
+epochs = 10000  # Training for 10,000 epochs
 batch_size = 64
 sample_interval = 100  # Interval for saving generated images
 
 # Build the generator model
 def build_generator():
     model = tf.keras.Sequential()
-    model.add(layers.Dense(256, input_dim=latent_dim))
+    model.add(layers.Dense(256, input_dim=latent_dim, kernel_initializer=tf.random_normal_initializer(0., 0.02)))
     model.add(layers.LeakyReLU(alpha=0.2))
     model.add(layers.BatchNormalization(momentum=0.8))
-    model.add(layers.Dense(512))
+    model.add(layers.Dense(512, kernel_initializer=tf.random_normal_initializer(0., 0.02)))
     model.add(layers.LeakyReLU(alpha=0.2))
     model.add(layers.BatchNormalization(momentum=0.8))
-    model.add(layers.Dense(1024))
+    model.add(layers.Dense(1024, kernel_initializer=tf.random_normal_initializer(0., 0.02)))
     model.add(layers.LeakyReLU(alpha=0.2))
     model.add(layers.BatchNormalization(momentum=0.8))
     model.add(layers.Dense(np.prod(x_train.shape[1:]), activation='tanh'))
@@ -35,9 +35,9 @@ def build_generator():
 def build_discriminator():
     model = tf.keras.Sequential()
     model.add(layers.Flatten(input_shape=x_train.shape[1:]))
-    model.add(layers.Dense(512))
+    model.add(layers.Dense(512, kernel_initializer=tf.random_normal_initializer(0., 0.02)))
     model.add(layers.LeakyReLU(alpha=0.2))
-    model.add(layers.Dense(256))
+    model.add(layers.Dense(256, kernel_initializer=tf.random_normal_initializer(0., 0.02)))
     model.add(layers.LeakyReLU(alpha=0.2))
     model.add(layers.Dense(1, activation='sigmoid'))
     return model
